@@ -38,3 +38,15 @@
   margin-top: -50px;
 }
 
+.pokeNameHidden {
+  font-family: 'Press Start 2P', cursive;
+  text-transform: uppercase;
+  margin-top: -50px;
+  opacity: 0;
+}
+
+.pokeImgHidden {
+  width: 500px;
+  filter: brightness(5%)
+}
+

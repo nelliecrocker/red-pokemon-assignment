@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import './PokeFetch.css';
 
 
@@ -9,10 +9,14 @@ class PokeFetch extends Component {
       pokeInfo: '',
       pokeSprite: '',
       pokeName: '',
+      count: 10
     }
   }
 
+
+
   fetchPokemon() {
+    
     let min = Math.ceil(1);
     let max = Math.floor(152);
     let pokeNum = Math.floor(Math.random() * (max - min) + min);
@@ -26,21 +30,43 @@ class PokeFetch extends Component {
           pokeName: res.species.name,
         })
       })
+      //timer
+      .then(
+        this.myInterval = setInterval(() => {
+          this.setState(prevState => ({
+            count: prevState.count - 1
+          }))
+          // if(this.state.count == 0) {
+          //   clearInterval(this.state.count)
+          // }
+        }, 1000)
+        )
       .catch((err) => console.log(err))
+
+  }
+
+  componentWillUnmount = () => {
+    clearInterval(this.myInterval)
   }
 
   render() {
+
+
     return (
       <div className={'wrapper'}>
-        <button className={'start'} onClick={() => this.fetchPokemon()}>Start!</button>
-        <h1 className={'timer'} >Timer Display</h1>
-        <div className={'pokeWrap'}>
-          <img className={'pokeImg'} src={this.state.pokeSprite} />
-          <h1 className={'pokeName'}>{this.state.pokeName}</h1>
+          <button className={'start'} onClick={() => this.fetchPokemon()}>Start!</button>
+          <h1 className={'timer'} >Countdown: {this.state.count} </h1>
+          <div className={'pokeWrap'}>
+            <img className={this.state.count > 0 ? 'pokeImgHidden' : 'pokeImg'} src={this.state.pokeSprite} />
+            <h1 className={this.state.count > 0 ?'pokeNameHidden' : 'pokeName'}>{this.state.pokeName}</h1>
+          </div>
         </div>
-      </div>
+        
     )
   }
+
+
 }
+
 
 export default PokeFetch;
